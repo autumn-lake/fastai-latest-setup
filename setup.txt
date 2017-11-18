@@ -1,0 +1,186 @@
+sudo apt-get update
+sudo apt-get --assume-yes upgrade
+sudo apt-get --assume-yes install tmux build-essential gcc g++ make binutils
+sudo apt-get --assume-yes install software-properties-common
+
+------------------------------------------------------
+##INSTALL CUDA Correctly
+https://developer.nvidia.com/cuda-downloads
+http://developer2.download.nvidia.com/compute/cuda/9.0/secure/Prod/docs/sidebar/CUDA_Installation_Guide_Linux.pdf
+
+wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install linux-headers-$(uname -r)
+sudo apt-get install cuda
+
+printenv
+unset LD_LIBRARY_PATH
+#Put in ~/.bashrc
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+source ~/.bashrc
+
+cd ~
+cat /proc/driver/nvidia/version
+nvcc -V
+cuda-install-samples-9.0.sh ~
+cd ~/NVIDIA_CUDA-9.0_Samples/5_Simulations/nbody
+make
+./nbody
+--------------------------------
+
+##INSTALL CUDNN correctly
+https://developer.nvidia.com/rdp/cudnn-download
+http://developer2.download.nvidia.com/compute/machine-learning/cudnn/secure/v7.0.3/prod/Doc/cuDNN-Installation-Guide.pdf
+
+ 1. Navigate to your <cudnnpath> directory containing cuDNN Debian file.
+ 2. Install the runtime library, for example:
+sudo dpkg -i libcudnn7_7.0.3.11-1+cuda9.0_amd64.deb
+ 3. Install the developer library, for example:
+sudo dpkg -i libcudnn7-dev_7.0.3.11-1+cuda9.0_amd64.deb
+ 4. Install the code samples and the cuDNN Library User Guide, for example:
+sudo dpkg -i libcudnn7-doc_7.0.3.11-1+cuda9.0_amd64.deb
+
+#verifying
+To verify that cuDNN is installed and is running properly, compile the mnistCUDNN
+sample located in the /usr/src/cudnn_samples_v7 directory in the debian file.
+ 1. Copy the cuDNN sample to a writable path.
+$ cp -r /usr/src/cudnn_samples_v7/ $HOME
+ 2. Go to the writable path.
+$ cd $HOME/cudnn_samples_v7/mnistCUDNN
+ 3. Compile the mnistCUDNN sample.
+$ make clean && make
+ 4. Run the mnistCUDNN sample.
+$ ./mnistCUDNN
+If cuDNN is properly installed and running on your Linux system, you will see a
+message similar to the following:
+Test passed!
+-----------------------------
+
+## INSTALL ANACONDA
+
+wget "https://repo.continuum.io/archive/Anaconda3-5.0.0-Linux-x86_64.sh"
+bash Anaconda3-5.0.0-Linux-x86_64.sh
+conda install bcolz
+conda update --all
+-----------------------------
+
+##INSTALL Theano
+http://deeplearning.net/software/theano/install.html
+http://deeplearning.net/software/theano/install_ubuntu.html
+
+#For Optimizations
+http://deeplearning.net/software/theano/tutorial/using_gpu.html#testing-the-gpu
+
+sudo apt install python3-dev
+pip install pycuda scikit-cuda
+conda install pygpu
+
+#Put in ~/.bashrc
+export CUDA_ROOT=/usr/local/cuda
+source ~/.bashrc
+
+conda install theano
+
+#RUN testing on gpu to check for correct installation
+http://deeplearning.net/software/theano/tutorial/using_gpu.html#testing-the-gpu
+
+THEANO_FLAGS=device=cpu python gpu_tutorial1.py
+THEANO_FLAGS=device=cuda0 python gpu_tutorial1.py
+
+#Remove CUDA_ROOT from bashrc and restart terminal
+echo "[global]
+device = cuda0
+floatX = float32
+[cuda]
+root = /usr/local/cuda" > ~/.theanorc
+----------------------------
+
+sudo apt install zip unzip htop dtrx p7zip-full git git-extras
+
+##install keras
+https://keras.io/backend/
+
+pip install keras
+
+$python
+import keras
+ctrl-d
+
+#Use theano backend because tensorflow not installed
+sudo nano ~/.keras/keras.json
+{
+    "floatx": "float32",
+    "epsilon": 1e-07,
+    "backend": "theano",
+    "image_data_format": "channels_first"
+}
+-------------------------------
+
+##Ipython
+jupyter-notebook --generate-config; cd ~/.jupyter; openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mykey.key -out mycert.pem
+
+python -c "import IPython;print(IPython.lib.passwd())"
+Enter password:
+Verify password:
+sha1:316e3829b957:9dd0bef3e1f7a675c05fc1f6c95a52b3536c9df1
+
+readlink -f mycert.pem
+nano jupyter_notebook_config.py
+
+c = get_config()
+c.IPKernelApp.pylab = 'inline'
+
+# Set options for certfile, ip, password, and toggle off browser auto-opening
+c.NotebookApp.certfile = u'/home/ubuntu/.jupyter/mycert.pem'
+c.NotebookApp.keyfile = u'/home/ubuntu/.jupyter/mykey.key'
+
+# Create your own password as indicated above
+c.NotebookApp.password = u'sha1:9d544c3bd8d0:5d07d9dfa2a9db11c81146854b889e860f758382'
+c.NotebookApp.ip = '*'
+c.NotebookApp.port = 8888
+c.NotebookApp.open_browser = False
+
+screen -d -m -S "Jupy" jupyter-notebook
+--------------------------------
+
+##Gdrive install
+
+wget https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download
+mv uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA gdrive
+sudo chmod 777 gdrive 
+sudo mv gdrive /usr/local/bin
+gdrive about
+-------------------------------
+
+#install XGBOOST
+pip install xgboost
+-------------------------------
+
+#Install lightgbm
+pip install lightgbm --install-option=--gpu
+-------------------------------
+
+#Install Bayesian optimization
+git clone https://github.com/fmfn/BayesianOptimization.git; cd BayesianOptimization; python setup.py install
+-------------------------------
+
+#Install hyperopt
+git clone https://github.com/hyperopt/hyperopt.git; cd hyperopt; python setup.py develop
+------------------------------
+
+pip install networkx
+pip install kaggle-cli
+kg config -g -c dogs-vs-cats-redux-kernels-edition -u username -p pass
+------------------------------
+
+#to obtain continuous updates without filling the terminal with output
+watch -n 0.1 nvidia-smi
+---------------------
+
+pip install jupyterthemes
+jt -t grade3 -tfs 10 -fs 9
