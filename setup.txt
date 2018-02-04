@@ -69,6 +69,11 @@ conda install bcolz
 conda update --all
 -----------------------------
 
+## INSTALL Tensorflow 1.5
+pip install --ignore-installed --upgrade tensorflow
+
+----------------------------
+
 ##INSTALL Theano
 http://deeplearning.net/software/theano/install.html
 http://deeplearning.net/software/theano/install_ubuntu.html
