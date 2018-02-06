@@ -120,13 +120,22 @@ $python
 import keras
 ctrl-d
 
-#Use theano backend because tensorflow not installed
+#Use theano backend
 sudo nano ~/.keras/keras.json
 {
     "floatx": "float32",
     "epsilon": 1e-07,
     "backend": "theano",
     "image_data_format": "channels_first"
+}
+
+#Use tensorflow backend
+sudo nano ~/.keras/keras.json
+{
+    "floatx": "float32",
+    "epsilon": 1e-07,
+    "backend": "tensorflow",
+    "image_data_format": "channels_last"
 }
 -------------------------------
 
