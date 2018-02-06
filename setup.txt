@@ -71,7 +71,10 @@ conda update --all
 
 ## INSTALL Tensorflow 1.5 and Pytorch
 pip install --ignore-installed --upgrade tensorflow
+
 conda install pytorch torchvision cuda90 -c pytorch
+# test pytorch gpu install
+python -c 'import torch; print(torch.rand(2,3).cuda())'
 
 ----------------------------
 
