@@ -3,6 +3,10 @@ sudo apt-get --assume-yes upgrade
 sudo apt-get --assume-yes install tmux build-essential gcc g++ make binutils
 sudo apt-get --assume-yes install software-properties-common
 
+sudo apt-get install -y build-essential cmake gfortran git pkg-config 
+sudo apt-get install -y python-dev software-properties-common wget vim
+sudo apt-get autoremove
+
 ------------------------------------------------------
 ##INSTALL CUDA Correctly
 https://developer.nvidia.com/cuda-downloads
@@ -177,6 +181,10 @@ gdrive about
 
 #install XGBOOST
 pip install xgboost
+
+pip install plotly
+pip install ggplot
+pip install opencv-python
 -------------------------------
 
 #Install lightgbm
