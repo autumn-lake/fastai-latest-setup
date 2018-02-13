@@ -210,3 +210,9 @@ watch -n 0.1 nvidia-smi
 
 pip install jupyterthemes
 jt -t grade3 -tfs 10 -fs 9
+---------------------
+
+##RL libraries
+
+pip install gym
+pip install pygame
