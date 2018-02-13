@@ -216,3 +216,12 @@ jt -t grade3 -tfs 10 -fs 9
 
 pip install gym
 pip install pygame
+---------------------
+
+#Pycharm
+sudo snap install pycharm-community --classic
+
+Uninstall:
+To remove the snap packages, either use Ubuntu Software or run command in terminal:
+
+sudo snap remove pycharm-community pycharm-professional
